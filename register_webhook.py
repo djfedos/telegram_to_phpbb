@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-
 import httpx
 from dotenv import load_dotenv
 
@@ -25,12 +24,12 @@ def main() -> None:
 
     with httpx.Client(timeout=30.0) as client:
         r = client.post(f"{API}/setWebhook", json=payload)
-        r.raise_for_status()
-        print("setWebhook:", r.json())
+        print("HTTP status:", r.status_code)
+        print("Response body:", r.text)
 
-        r = client.get(f"{API}/getWebhookInfo")
-        r.raise_for_status()
-        print("getWebhookInfo:", r.json())
+        r2 = client.get(f"{API}/getWebhookInfo")
+        print("Webhook info status:", r2.status_code)
+        print("Webhook info body:", r2.text)
 
 
 if __name__ == "__main__":
