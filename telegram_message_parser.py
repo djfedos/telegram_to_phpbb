@@ -4,6 +4,15 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, UTC
 from html import escape
 from typing import Any
+from pathlib import Path
+import json
+import os
+from dotenv import load_dotenv
+from icecream import ic
+
+load_dotenv()
+
+RAW_LOG_DIR = Path(os.environ.get("RAW_LOG_DIR", "logs/raw_updates"))
 
 
 @dataclass(slots=True)
@@ -145,3 +154,14 @@ def telegram_text_to_html(text: str) -> str:
     Later: expand Telegram entities into phpBB-friendly markup or HTML.
     """
     return escape(text).replace("\n", "<br>\n")
+
+
+if __name__ == "__main__":
+    payload = json.loads(Path(f"{RAW_LOG_DIR}/20260406T122401.316980Z__channel_post__743633982.json").read_text())
+    # payload = json.loads(Path(f"{RAW_LOG_DIR}/20260406T122822.700685Z__channel_post__743633983.json").read_text())
+    # payload = json.loads(Path(f"{RAW_LOG_DIR}/20260406T123143.229965Z__channel_post__743633984.json").read_text())
+
+    post = parse_telegram_update(payload)
+
+    ic(asdict(post))
+
