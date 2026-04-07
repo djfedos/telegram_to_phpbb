@@ -48,7 +48,7 @@ def write_raw_payload(payload: dict[str, Any]) -> Path:
     return path
 
 
-@app.get("/health")
+@app.get("/telegram/health")
 async def health() -> dict[str, str]:
     return {"status": "ok"}
 
